@@ -64,11 +64,11 @@ const Experience = () => {
         <h2 className="text-2xl md:text-3xl font-bold mb-2 font-playfair text-navy-700">
           <span className="text-teal-500">03.</span> Experience
         </h2>
-        <p className="text-navy-600 mb-8 max-w-xl">
+        <p className="text-navy-600 mb-6 sm:mb-8 max-w-xl">
           My professional journey and relevant experience in the tech world.
         </p>
 
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-8">
           {/* Tabs for larger screens */}
           <div className="hidden md:block md:w-1/4 border-l-2 border-navy-100">
             {experiences.map((exp) => (
@@ -86,16 +86,16 @@ const Experience = () => {
             ))}
           </div>
 
-          {/* Dropdown for mobile */}
+          {/* Dropdown for mobile - enhanced for better touch control */}
           <div className="md:hidden mb-6">
             <select
               value={activeTab}
               onChange={(e) => setActiveTab(e.target.value)}
-              className="w-full p-2 border border-navy-200 rounded-md bg-white text-navy-700"
+              className="w-full p-3 border border-navy-200 rounded-md bg-white text-navy-700 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
             >
               {experiences.map((exp) => (
                 <option key={exp.id} value={exp.id}>
-                  {exp.company}
+                  {exp.company} - {exp.role}
                 </option>
               ))}
             </select>
@@ -111,15 +111,15 @@ const Experience = () => {
                 </h3>
                 
                 <div className="flex items-center text-navy-500 mt-1 mb-4">
-                  <Calendar size={16} className="mr-1" />
-                  <span>{activeExperience.period}</span>
+                  <Calendar size={16} className="mr-1 flex-shrink-0" />
+                  <span className="text-sm sm:text-base">{activeExperience.period}</span>
                 </div>
                 
                 <ul className="space-y-3 mb-6">
                   {activeExperience.description.map((point, idx) => (
                     <li key={idx} className="flex items-start">
-                      <span className="text-teal-500 mr-2">▹</span>
-                      <span className="text-navy-600">{point}</span>
+                      <span className="text-teal-500 mr-2 mt-1 flex-shrink-0">▹</span>
+                      <span className="text-navy-600 text-sm sm:text-base">{point}</span>
                     </li>
                   ))}
                 </ul>
@@ -139,18 +139,18 @@ const Experience = () => {
           </div>
         </div>
 
-        <div className="mt-12 p-6 bg-navy-50 rounded-lg border border-navy-100">
+        <div className="mt-10 sm:mt-12 p-4 sm:p-6 bg-navy-50 rounded-lg border border-navy-100">
           <h3 className="text-lg font-medium text-navy-700 mb-2">Education</h3>
-          <div className="flex flex-col sm:flex-row justify-between">
+          <div className="flex flex-col sm:flex-row sm:justify-between">
             <div>
               <h4 className="font-bold text-navy-700">Bachelor of Computer Science</h4>
               <p className="text-navy-600">University Name</p>
             </div>
-            <div className="text-navy-500 mt-1 sm:mt-0">
+            <div className="text-navy-500 mt-1 sm:mt-0 text-sm sm:text-base">
               2023 - Present (First Year)
             </div>
           </div>
-          <p className="mt-3 text-navy-600">
+          <p className="mt-3 text-navy-600 text-sm sm:text-base">
             Currently pursuing my degree with a focus on software development, algorithms, 
             and data structures. Actively participating in coding clubs and tech events.
           </p>

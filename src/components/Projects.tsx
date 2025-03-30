@@ -83,40 +83,41 @@ const Projects = () => {
           A showcase of my recent development work, side projects, and experiments.
         </p>
 
-        <div className="flex mb-8 border-b border-navy-100">
+        <div className="flex mb-8 border-b border-navy-100 overflow-x-auto pb-1 scrollbar-none">
           <button 
             onClick={() => setFilter('all')}
-            className={`mr-4 pb-2 ${filter === 'all' ? 'border-b-2 border-teal-500 text-navy-700 font-medium' : 'text-navy-500'}`}
+            className={`mr-4 pb-2 whitespace-nowrap ${filter === 'all' ? 'border-b-2 border-teal-500 text-navy-700 font-medium' : 'text-navy-500'}`}
           >
             All Projects
           </button>
           <button 
             onClick={() => setFilter('featured')}
-            className={`mr-4 pb-2 ${filter === 'featured' ? 'border-b-2 border-teal-500 text-navy-700 font-medium' : 'text-navy-500'}`}
+            className={`mr-4 pb-2 whitespace-nowrap ${filter === 'featured' ? 'border-b-2 border-teal-500 text-navy-700 font-medium' : 'text-navy-500'}`}
           >
             Featured
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredProjects.map((project, index) => (
             <div 
               key={index} 
-              className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all hover:translate-y-[-5px] group"
+              className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all hover:-translate-y-1 sm:hover:-translate-y-2 group"
             >
-              <div className="h-48 overflow-hidden">
+              <div className="h-40 sm:h-48 overflow-hidden">
                 <img 
                   src={project.image} 
                   alt={project.title} 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
                 />
               </div>
 
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2 text-navy-700">{project.title}</h3>
-                <p className="text-navy-600 mb-4">{project.description}</p>
+              <div className="p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold mb-2 text-navy-700">{project.title}</h3>
+                <p className="text-navy-600 mb-4 text-sm sm:text-base">{project.description}</p>
                 
-                <div className="flex flex-wrap mb-4 gap-2">
+                <div className="flex flex-wrap mb-4 gap-1 sm:gap-2">
                   {project.tags.map((tag, tagIndex) => (
                     <span key={tagIndex} className="text-xs px-2 py-1 bg-navy-50 text-navy-600 rounded-full">
                       {tag}
@@ -125,13 +126,13 @@ const Projects = () => {
                 </div>
                 
                 <div className="flex justify-between items-center pt-2">
-                  <div className="space-x-3">
+                  <div className="space-x-2 sm:space-x-3">
                     {project.demoUrl && (
                       <a 
                         href={project.demoUrl} 
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-navy-700 hover:text-teal-500"
+                        className="inline-flex items-center text-navy-700 hover:text-teal-500 text-sm sm:text-base tap-target"
                       >
                         <ExternalLink size={16} className="mr-1" /> Demo
                       </a>
@@ -142,14 +143,14 @@ const Projects = () => {
                         href={project.repoUrl} 
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-navy-700 hover:text-teal-500"
+                        className="inline-flex items-center text-navy-700 hover:text-teal-500 text-sm sm:text-base tap-target"
                       >
                         <Github size={16} className="mr-1" /> Code
                       </a>
                     )}
                   </div>
                   
-                  <span className="text-navy-400 text-sm font-medium">
+                  <span className="text-navy-400 text-xs sm:text-sm font-medium">
                     {project.featured && "Featured"}
                   </span>
                 </div>
@@ -163,7 +164,7 @@ const Projects = () => {
             href="https://github.com" 
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center font-medium text-teal-500 hover:text-teal-700"
+            className="inline-flex items-center font-medium text-teal-500 hover:text-teal-700 tap-target"
           >
             View more on GitHub <ArrowRight className="ml-1 h-4 w-4" />
           </a>

@@ -18,11 +18,21 @@ const Index = () => {
   const [isPointerDown, setIsPointerDown] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollProgress, setShowScrollProgress] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Handle cursor position
+    // Check if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    // Handle cursor position - only on desktop
     const handleMouseMove = (e: MouseEvent) => {
-      setCursorPosition({ x: e.clientX, y: e.clientY });
+      if (!isMobile) {
+        setCursorPosition({ x: e.clientX, y: e.clientY });
+      }
     };
 
     const handlePointerDown = () => setIsPointerDown(true);
@@ -137,10 +147,15 @@ const Index = () => {
       sectionObserver.observe(sectionEl);
     });
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('pointerdown', handlePointerDown);
-    window.addEventListener('pointerup', handlePointerUp);
+    // Only add mouse events on non-mobile devices
+    if (!isMobile) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('pointerdown', handlePointerDown);
+      window.addEventListener('pointerup', handlePointerUp);
+    }
+    
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
 
     return () => {
       observer.disconnect();
@@ -150,41 +165,51 @@ const Index = () => {
       scaleObserver.disconnect();
       blurObserver.disconnect();
       sectionObserver.disconnect();
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('pointerdown', handlePointerDown);
-      window.removeEventListener('pointerup', handlePointerUp);
+      
+      if (!isMobile) {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('pointerdown', handlePointerDown);
+        window.removeEventListener('pointerup', handlePointerUp);
+      }
+      
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      window.removeEventListener('resize', checkMobile);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
       {/* Background blobs with enhanced colors */}
       <div className="fixed inset-0 z-[-1] overflow-hidden">
-        <div className="blob blob-purple w-[40vw] h-[40vw] top-[-10%] right-[-10%] animate-blob-morph"></div>
-        <div className="blob blob-pink w-[35vw] h-[35vw] top-[40%] left-[-15%] animate-blob-morph" style={{ animationDelay: '2s' }}></div>
-        <div className="blob blob-indigo w-[30vw] h-[30vw] bottom-[-10%] right-[20%] animate-blob-morph" style={{ animationDelay: '4s' }}></div>
+        <div className="blob blob-purple w-[60vw] sm:w-[40vw] h-[60vw] sm:h-[40vw] top-[-10%] right-[-20%] sm:right-[-10%] animate-blob-morph"></div>
+        <div className="blob blob-pink w-[50vw] sm:w-[35vw] h-[50vw] sm:h-[35vw] top-[30%] sm:top-[40%] left-[-20%] sm:left-[-15%] animate-blob-morph" style={{ animationDelay: '2s' }}></div>
+        <div className="blob blob-indigo w-[40vw] sm:w-[30vw] h-[40vw] sm:h-[30vw] bottom-[-15%] sm:bottom-[-10%] right-[10%] sm:right-[20%] animate-blob-morph" style={{ animationDelay: '4s' }}></div>
       </div>
       
       {/* Custom cursor effect - only visible on desktop */}
-      <div 
-        className="fixed w-6 h-6 rounded-full border-2 border-vibrant-purple pointer-events-none z-[100] mix-blend-difference hidden md:block"
-        style={{ 
-          transform: `translate(${cursorPosition.x - 12}px, ${cursorPosition.y - 12}px)`,
-          transition: 'transform 0.1s ease-out',
-          opacity: 0.7
-        }}
-      ></div>
-      
-      {/* Cursor dot */}
-      <div 
-        className="fixed w-2 h-2 bg-vibrant-purple rounded-full pointer-events-none z-[100] hidden md:block"
-        style={{ 
-          transform: `translate(${cursorPosition.x - 1}px, ${cursorPosition.y - 1}px)`,
-          transition: 'transform 0.05s linear',
-          scale: isPointerDown ? '2' : '1'
-        }}
-      ></div>
+      {!isMobile && (
+        <>
+          <div 
+            className="fixed w-6 h-6 rounded-full border-2 border-vibrant-purple pointer-events-none z-[100] mix-blend-difference hidden md:block"
+            style={{ 
+              transform: `translate(${cursorPosition.x - 12}px, ${cursorPosition.y - 12}px)`,
+              transition: 'transform 0.1s ease-out',
+              opacity: 0.7
+            }}
+          ></div>
+          
+          {/* Cursor dot */}
+          <div 
+            className="fixed w-2 h-2 bg-vibrant-purple rounded-full pointer-events-none z-[100] hidden md:block"
+            style={{ 
+              transform: `translate(${cursorPosition.x - 1}px, ${cursorPosition.y - 1}px)`,
+              transition: 'transform 0.05s linear',
+              scale: isPointerDown ? '2' : '1'
+            }}
+          ></div>
+        </>
+      )}
       
       {/* Scroll progress indicator */}
       {showScrollProgress && (
@@ -205,10 +230,10 @@ const Index = () => {
       <Contact />
       <Footer />
       
-      {/* Back to top button */}
+      {/* Back to top button - improved for mobile */}
       <button 
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className={`fixed bottom-6 right-6 p-3 bg-white rounded-full shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 z-50 ${
+        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 p-3 bg-white rounded-full shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 z-50 tap-target ${
           showScrollProgress ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}
         aria-label="Back to top"

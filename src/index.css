@@ -58,13 +58,39 @@
 
   /* Custom Utility Classes */
   .section {
-    @apply py-20 md:py-28 px-4 md:px-8 relative overflow-hidden;
+    @apply py-16 sm:py-20 md:py-28 px-4 md:px-8 relative overflow-hidden;
   }
 
   .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full;
   }
 
+  /* Responsive utilities */
+  .responsive-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+  
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6;
+  }
+  
+  .responsive-flex {
+    @apply flex flex-col sm:flex-row;
+  }
+
+  /* Enhanced responsive text */
+  .text-responsive-title {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold;
+  }
+  
+  .text-responsive-subtitle {
+    @apply text-xl sm:text-2xl md:text-3xl font-medium;
+  }
+  
+  .text-responsive-body {
+    @apply text-base sm:text-lg;
+  }
+  
   /* Enhanced underline animation for nav links */
   .nav-link {
     @apply relative inline-block overflow-hidden;
@@ -186,9 +212,9 @@
     -webkit-text-stroke: 1px rgba(139, 92, 246, 0.3);
   }
   
-  /* Custom button styles */
+  /* Custom button styles - improved for touch devices */
   .btn-primary {
-    @apply px-6 py-3 bg-vibrant-purple text-white font-medium rounded-md hover:bg-vibrant-purple/90 transition-all shadow-md hover:shadow-lg hover:shadow-vibrant-purple/20 relative overflow-hidden;
+    @apply px-4 py-2 sm:px-6 sm:py-3 bg-vibrant-purple text-white font-medium rounded-md hover:bg-vibrant-purple/90 transition-all shadow-md hover:shadow-lg hover:shadow-vibrant-purple/20 relative overflow-hidden;
   }
   
   .btn-primary::after {
@@ -204,7 +230,7 @@
   }
   
   .btn-outline {
-    @apply px-6 py-3 border-2 border-foreground/20 text-foreground font-medium rounded-md hover:border-vibrant-purple/60 transition-all relative overflow-hidden;
+    @apply px-4 py-2 sm:px-6 sm:py-3 border-2 border-foreground/20 text-foreground font-medium rounded-md hover:border-vibrant-purple/60 transition-all relative overflow-hidden;
   }
 
   /* Custom scrollbar */
@@ -225,9 +251,9 @@
     @apply bg-gradient-to-b from-vibrant-purple/70 to-vibrant-pink/70;
   }
 
-  /* Blob animations */
+  /* Blob animations - adjusted for better mobile display */
   .blob {
-    @apply absolute rounded-full blur-3xl opacity-30 animate-blob-morph;
+    @apply absolute rounded-full blur-3xl opacity-20 sm:opacity-30 animate-blob-morph;
   }
   .blob-purple {
     @apply bg-vibrant-purple;
@@ -242,18 +268,21 @@
     @apply bg-vibrant-teal;
   }
   
-  /* Advanced 3D effects */
+  /* Advanced 3D effects - optimized for mobile */
   .card-3d {
     @apply transition-all duration-300 transform-gpu;
     transform-style: preserve-3d;
     perspective: 1000px;
   }
   
-  .card-3d:hover {
-    transform: rotateY(5deg) rotateX(5deg) scale(1.05);
-    box-shadow: 
-      -5px 5px 20px rgba(139, 92, 246, 0.1),
-      5px -5px 20px rgba(217, 70, 239, 0.1);
+  /* Use hover effects only on devices that support hover */
+  @media (hover: hover) {
+    .card-3d:hover {
+      transform: rotateY(5deg) rotateX(5deg) scale(1.05);
+      box-shadow: 
+        -5px 5px 20px rgba(139, 92, 246, 0.1),
+        5px -5px 20px rgba(217, 70, 239, 0.1);
+    }
   }
   
   /* Animated border */
@@ -264,14 +293,14 @@
     animation: gradientShift 6s linear infinite;
   }
   
-  /* New section dividers */
+  /* New section dividers - fixed overflow on small screens */
   .wave-divider {
     @apply absolute bottom-0 left-0 w-full overflow-hidden z-10;
-    line-height: 0; /* Replace leading-0 with standard CSS line-height property */
+    line-height: 0;
   }
   
   .wave-divider svg {
-    @apply relative block w-full h-[60px] min-w-[1000px];
+    @apply relative block w-full h-[40px] sm:h-[60px] min-w-[100%];
   }
   
   .wave-divider .shape-fill {
@@ -281,5 +310,29 @@
   /* Text animations */
   .animated-text {
     @apply animate-text-glow;
+  }
+  
+  /* Mobile menu adjustments */
+  .mobile-menu {
+    @apply fixed inset-0 bg-white/95 backdrop-blur-md z-50 flex flex-col items-center justify-center;
+  }
+  
+  /* Touch-friendly tap targets */
+  .tap-target {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+}
+
+/* Media query for small screen adjustments outside of Tailwind */
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Media query for very small screens */
+@media screen and (max-width: 350px) {
+  html {
+    font-size: 12px;
   }
 }
