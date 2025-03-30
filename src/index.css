@@ -7,33 +7,35 @@
 
 @layer base {
   :root {
-    --background: 240 33% 98%;
-    --foreground: 248 47% 11%;
+    /* Light theme color scheme - Soft minimalist with vibrant accents */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 248 47% 11%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 248 47% 11%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 262 83% 58%;
+    /* Vibrant purples as primary colors */
+    --primary: 265 83% 58%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 250 95% 70%;
+    --secondary: 250 95% 65%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 210 40% 96%;
-    --muted-foreground: 252 16% 47%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 250 95% 70%;
-    --accent-foreground: 248 47% 11%;
+    --accent: 262 83% 65%;
+    --accent-foreground: 222 47% 11%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 262 83% 58%;
+    --ring: 265 83% 58%;
 
     --radius: 0.5rem;
   }
@@ -63,7 +65,7 @@
 
   /* Underline animation for nav links */
   .nav-link {
-    @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-purple-500 after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+    @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-vibrant-purple after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
   }
 
   /* Animation delay utilities */
@@ -82,13 +84,51 @@
   .delay-500 {
     animation-delay: 500ms;
   }
+  .delay-600 {
+    animation-delay: 600ms;
+  }
+  .delay-700 {
+    animation-delay: 700ms;
+  }
+  .delay-800 {
+    animation-delay: 800ms;
+  }
 
-  /* Reveal animation */
+  /* Scroll-triggered animations */
   .reveal-element {
     @apply opacity-0 translate-y-8 transition-all duration-700;
   }
   .reveal-element.revealed {
     @apply opacity-100 translate-y-0;
+  }
+
+  /* Enhanced animations for sections */
+  .fade-up-element {
+    @apply opacity-0 translate-y-10 transition-all duration-800;
+  }
+  .fade-up-element.visible {
+    @apply opacity-100 translate-y-0;
+  }
+
+  .fade-in-element {
+    @apply opacity-0 transition-opacity duration-800;
+  }
+  .fade-in-element.visible {
+    @apply opacity-100;
+  }
+
+  .scale-element {
+    @apply opacity-0 scale-95 transition-all duration-700;
+  }
+  .scale-element.visible {
+    @apply opacity-100 scale-100;
+  }
+
+  .blur-element {
+    @apply opacity-0 blur-sm transition-all duration-800;
+  }
+  .blur-element.visible {
+    @apply opacity-100 blur-0;
   }
 
   /* Card hover effects */
@@ -101,10 +141,20 @@
 
   /* Gradient backgrounds */
   .gradient-bg-purple {
-    @apply bg-gradient-to-br from-purple-500/90 to-indigo-600/90;
+    @apply bg-gradient-to-br from-vibrant-purple/90 to-secondary/90;
   }
   .gradient-text {
-    @apply bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-vibrant-purple to-secondary bg-clip-text text-transparent;
+  }
+  
+  /* New vibrant gradient backgrounds */
+  .gradient-bg-vibrant {
+    @apply bg-gradient-to-tr from-vibrant-purple via-primary to-vibrant-pink bg-[size:200%] animate-gradient-shift;
+  }
+  
+  /* Glassmorphism */
+  .glass-card {
+    @apply backdrop-blur-md bg-white/20 border border-white/20 shadow-lg;
   }
 
   /* Custom scrollbar */
@@ -118,12 +168,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(99, 102, 241, 0.3);
+    background: rgba(168, 85, 247, 0.3);
     border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(99, 102, 241, 0.6);
+    background: rgba(168, 85, 247, 0.6);
   }
 
   /* Blob animations */
@@ -131,9 +181,12 @@
     @apply absolute rounded-full blur-3xl opacity-30;
   }
   .blob-purple {
-    @apply bg-purple-500;
+    @apply bg-vibrant-purple;
   }
   .blob-indigo {
-    @apply bg-indigo-500;
+    @apply bg-secondary;
+  }
+  .blob-pink {
+    @apply bg-vibrant-pink;
   }
 }

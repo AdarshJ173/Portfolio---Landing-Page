@@ -18,13 +18,13 @@ const Navbar = () => {
   }, []);
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-sm shadow-sm' : 'bg-transparent'}`}>
+    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-sm shadow-sm' : 'bg-transparent'}`}>
       <div className="container-custom">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <a href="#" className="text-xl font-bold font-playfair text-navy-700">
-            <span className="text-teal-500">{'<'}</span>
+          <a href="#" className="text-xl font-bold font-playfair text-foreground">
+            <span className="text-vibrant-purple">{'<'}</span>
             Stefan
-            <span className="text-teal-500">{'/>'}</span>
+            <span className="text-vibrant-purple">{'/>'}</span>
           </a>
 
           {/* Desktop Navigation */}
@@ -33,7 +33,7 @@ const Navbar = () => {
               <a 
                 key={item} 
                 href={`#${item.toLowerCase()}`} 
-                className="nav-link font-medium text-navy-700 hover:text-teal-500 transition-colors"
+                className="nav-link font-medium text-foreground/90 hover:text-vibrant-purple transition-colors"
               >
                 {item}
               </a>
@@ -42,7 +42,7 @@ const Navbar = () => {
           
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden text-navy-700 hover:text-teal-500 transition-colors"
+            className="md:hidden text-foreground hover:text-vibrant-purple transition-colors"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -53,13 +53,13 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden bg-white">
+        <div className="md:hidden bg-white/95 backdrop-blur-sm shadow-md">
           <div className="container-custom py-4 space-y-4">
             {['About', 'Projects', 'Experience', 'Content', 'Contact'].map((item) => (
               <a 
                 key={item} 
                 href={`#${item.toLowerCase()}`}
-                className="block py-2 text-navy-700 hover:text-teal-500 transition-colors"
+                className="block py-2 text-foreground hover:text-vibrant-purple transition-colors"
                 onClick={() => setIsOpen(false)}
               >
                 {item}
