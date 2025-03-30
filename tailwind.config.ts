@@ -23,6 +23,9 @@ export default {
 				sans: ["Inter", "sans-serif"],
 				playfair: ["Playfair Display", "serif"],
 			},
+			transitionDuration: {
+				'800': '800ms', // Add the missing 800ms duration
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
