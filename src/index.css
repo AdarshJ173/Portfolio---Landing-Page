@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @tailwind base;
@@ -6,34 +7,34 @@
 
 @layer base {
   :root {
-    /* Light theme color scheme - Soft minimalist with vibrant accents */
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+    /* Enhanced color scheme - more vibrant and unique */
+    --background: 250 50% 98%;
+    --foreground: 265 30% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 265 30% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 265 30% 10%;
 
     /* Vibrant purples as primary colors */
     --primary: 265 83% 58%;
-    --primary-foreground: 210 40% 98%;
+    --primary-foreground: 250 50% 98%;
 
     --secondary: 250 95% 65%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary-foreground: 250 50% 98%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 250 40% 96%;
+    --muted-foreground: 250 16% 47%;
 
-    --accent: 262 83% 65%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 280 83% 65%;
+    --accent-foreground: 265 30% 10%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 250 50% 98%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
+    --border: 250 32% 91%;
+    --input: 250 32% 91%;
     --ring: 265 83% 58%;
 
     --radius: 0.5rem;
@@ -51,47 +52,45 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    background-image: radial-gradient(circle at 30% 10%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+                      radial-gradient(circle at 80% 60%, rgba(217, 70, 239, 0.06) 0%, transparent 50%);
+    background-attachment: fixed;
   }
 
   /* Custom Utility Classes */
   .section {
-    @apply py-20 md:py-28 px-4 md:px-8;
+    @apply py-20 md:py-28 px-4 md:px-8 relative overflow-hidden;
   }
 
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Underline animation for nav links */
+  /* Enhanced underline animation for nav links */
   .nav-link {
-    @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-vibrant-purple after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+    @apply relative inline-block overflow-hidden;
+  }
+  
+  .nav-link::after {
+    @apply content-[''] absolute w-full h-0.5 bottom-0 left-0 bg-gradient-to-r from-vibrant-purple to-vibrant-pink scale-x-0 origin-bottom-right transition-transform duration-300 ease-in-out;
+  }
+  
+  .nav-link:hover::after {
+    @apply scale-x-100 origin-bottom-left;
   }
 
   /* Animation delay utilities */
-  .delay-100 {
-    animation-delay: 100ms;
-  }
-  .delay-200 {
-    animation-delay: 200ms;
-  }
-  .delay-300 {
-    animation-delay: 300ms;
-  }
-  .delay-400 {
-    animation-delay: 400ms;
-  }
-  .delay-500 {
-    animation-delay: 500ms;
-  }
-  .delay-600 {
-    animation-delay: 600ms;
-  }
-  .delay-700 {
-    animation-delay: 700ms;
-  }
-  .delay-800 {
-    animation-delay: 800ms;
-  }
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  .delay-600 { animation-delay: 600ms; }
+  .delay-700 { animation-delay: 700ms; }
+  .delay-800 { animation-delay: 800ms; }
+  .delay-1000 { animation-delay: 1000ms; }
+  .delay-1200 { animation-delay: 1200ms; }
+  .delay-1500 { animation-delay: 1500ms; }
 
   /* Scroll-triggered animations */
   .reveal-element {
@@ -130,20 +129,21 @@
     @apply opacity-100 blur-0;
   }
 
-  /* Card hover effects */
+  /* Enhanced card hover effects */
   .hover-card {
-    @apply transition-all duration-300;
+    @apply transition-all duration-500;
   }
   .hover-card:hover {
-    @apply -translate-y-2 shadow-lg;
+    @apply -translate-y-3 shadow-xl shadow-vibrant-purple/10;
   }
 
-  /* Gradient backgrounds */
+  /* Gradient backgrounds and text */
   .gradient-bg-purple {
     @apply bg-gradient-to-br from-vibrant-purple/90 to-secondary/90;
   }
+  
   .gradient-text {
-    @apply bg-gradient-to-r from-vibrant-purple to-secondary bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-vibrant-purple to-vibrant-pink bg-clip-text text-transparent;
   }
   
   /* New vibrant gradient backgrounds */
@@ -151,9 +151,61 @@
     @apply bg-gradient-to-tr from-vibrant-purple via-primary to-vibrant-pink bg-[size:200%] animate-gradient-shift;
   }
   
-  /* Glassmorphism */
+  /* New different gradient combinations */
+  .gradient-bg-teal-blue {
+    @apply bg-gradient-to-r from-vibrant-teal via-vibrant-cyan to-vibrant-blue bg-[size:200%] animate-gradient-shift;
+  }
+  
+  .gradient-bg-sunset {
+    @apply bg-gradient-to-r from-vibrant-orange via-vibrant-coral to-vibrant-pink bg-[size:200%] animate-gradient-shift;
+  }
+  
+  /* Enhanced glassmorphism */
   .glass-card {
-    @apply backdrop-blur-md bg-white/20 border border-white/20 shadow-lg;
+    @apply backdrop-blur-lg bg-white/15 border border-white/30 shadow-lg;
+  }
+  
+  .glass-nav {
+    @apply backdrop-blur-md bg-white/70 border-b border-white/20 shadow-sm;
+  }
+  
+  .glass-dark {
+    @apply backdrop-blur-md bg-gray-900/50 border border-white/10 shadow-lg;
+  }
+
+  /* Shimmer effect */
+  .shimmer {
+    @apply relative overflow-hidden;
+  }
+  
+  .shimmer::after {
+    @apply content-[''] absolute top-0 -right-100% bottom-0 left-0 w-[200%] bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer;
+  }
+
+  /* Text outline effect */
+  .text-outline {
+    -webkit-text-stroke: 1px rgba(139, 92, 246, 0.3);
+  }
+  
+  /* Custom button styles */
+  .btn-primary {
+    @apply px-6 py-3 bg-vibrant-purple text-white font-medium rounded-md hover:bg-vibrant-purple/90 transition-all shadow-md hover:shadow-lg hover:shadow-vibrant-purple/20 relative overflow-hidden group;
+  }
+  
+  .btn-primary::after {
+    @apply content-[''] absolute inset-0 scale-x-0 origin-left bg-gradient-to-r from-vibrant-pink to-vibrant-purple opacity-60 transition-transform duration-500 ease-out z-0;
+  }
+  
+  .btn-primary:hover::after {
+    @apply scale-x-100;
+  }
+  
+  .btn-primary > * {
+    @apply relative z-10;
+  }
+  
+  .btn-outline {
+    @apply px-6 py-3 border-2 border-foreground/20 text-foreground font-medium rounded-md hover:border-vibrant-purple/60 transition-all relative overflow-hidden;
   }
 
   /* Custom scrollbar */
@@ -167,17 +219,16 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(168, 85, 247, 0.3);
-    border-radius: 9999px;
+    @apply bg-gradient-to-b from-vibrant-purple/50 to-vibrant-pink/50 rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(168, 85, 247, 0.6);
+    @apply bg-gradient-to-b from-vibrant-purple/70 to-vibrant-pink/70;
   }
 
   /* Blob animations */
   .blob {
-    @apply absolute rounded-full blur-3xl opacity-30;
+    @apply absolute rounded-full blur-3xl opacity-30 animate-blob-morph;
   }
   .blob-purple {
     @apply bg-vibrant-purple;
@@ -187,5 +238,48 @@
   }
   .blob-pink {
     @apply bg-vibrant-pink;
+  }
+  .blob-teal {
+    @apply bg-vibrant-teal;
+  }
+  
+  /* Advanced 3D effects */
+  .card-3d {
+    @apply transition-all duration-300 transform-gpu;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  
+  .card-3d:hover {
+    transform: rotateY(5deg) rotateX(5deg) scale(1.05);
+    box-shadow: 
+      -5px 5px 20px rgba(139, 92, 246, 0.1),
+      5px -5px 20px rgba(217, 70, 239, 0.1);
+  }
+  
+  /* Animated border */
+  .animated-border {
+    @apply relative rounded-lg p-1;
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.6), rgba(217, 70, 239, 0.6), rgba(139, 92, 246, 0.6));
+    background-size: 200% 100%;
+    animation: gradientShift 6s linear infinite;
+  }
+  
+  /* New section dividers */
+  .wave-divider {
+    @apply absolute bottom-0 left-0 w-full overflow-hidden leading-0 z-10;
+  }
+  
+  .wave-divider svg {
+    @apply relative block w-full h-[60px] min-w-[1000px];
+  }
+  
+  .wave-divider .shape-fill {
+    @apply fill-white;
+  }
+  
+  /* Text animations */
+  .animated-text {
+    @apply animate-text-glow;
   }
 }

@@ -24,7 +24,9 @@ export default {
 				playfair: ["Playfair Display", "serif"],
 			},
 			transitionDuration: {
-				'800': '800ms', // Add the missing 800ms duration
+				'800': '800ms',
+				'1500': '1500ms',
+				'2000': '2000ms',
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -76,6 +78,9 @@ export default {
 					purple: '#8B5CF6',
 					pink: '#D946EF',
 					blue: '#4A90E2',
+					green: '#10B981',
+					coral: '#FF7F50',
+					teal: '#0D9488',
 				},
 				// Dark theme colors
 				dark: {
@@ -198,6 +203,76 @@ export default {
 					'100%': { 
 						backgroundPosition: '0% 50%' 
 					}
+				},
+				// New advanced animations
+				floatAnimation: {
+					'0%, 100%': { 
+						transform: 'translateY(0)' 
+					},
+					'50%': { 
+						transform: 'translateY(-10px)' 
+					}
+				},
+				morphing: {
+					'0%': { 
+						borderRadius: '60% 40% 30% 70%/60% 30% 70% 40%' 
+					},
+					'50%': { 
+						borderRadius: '30% 60% 70% 40%/50% 60% 30% 60%' 
+					},
+					'100%': { 
+						borderRadius: '60% 40% 30% 70%/60% 30% 70% 40%' 
+					}
+				},
+				shimmer: {
+					'0%': { 
+						backgroundPosition: '-200% 0' 
+					},
+					'100%': { 
+						backgroundPosition: '200% 0' 
+					}
+				},
+				textGlow: {
+					'0%, 100%': { 
+						textShadow: '0 0 5px rgba(139, 92, 246, 0.5), 0 0 10px rgba(139, 92, 246, 0.3)' 
+					},
+					'50%': { 
+						textShadow: '0 0 15px rgba(139, 92, 246, 0.8), 0 0 20px rgba(139, 92, 246, 0.5)' 
+					}
+				},
+				blobMorph: {
+					'0%, 100%': { 
+						borderRadius: '40% 60% 60% 40% / 70% 30% 70% 30%' 
+					},
+					'25%': { 
+						borderRadius: '40% 60% 30% 70% / 50% 60% 30% 60%' 
+					},
+					'50%': { 
+						borderRadius: '20% 80% 20% 80% / 20% 80% 20% 80%' 
+					},
+					'75%': { 
+						borderRadius: '60% 40% 60% 40% / 30% 60% 70% 40%' 
+					}
+				},
+				revealRight: {
+					'0%': { 
+						transform: 'scaleX(0)', 
+						transformOrigin: 'left' 
+					},
+					'100%': { 
+						transform: 'scaleX(1)', 
+						transformOrigin: 'left' 
+					}
+				},
+				bounce: {
+					'0%, 100%': { 
+						transform: 'translateY(0)', 
+						animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)' 
+					},
+					'50%': { 
+						transform: 'translateY(-25%)', 
+						animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)' 
+					}
 				}
 			},
 			animation: {
@@ -209,11 +284,19 @@ export default {
 				'slide-up': 'slideUp 0.8s ease-out forwards',
 				'scale-in': 'scaleIn 0.5s ease-out forwards',
 				'slow-rotate': 'rotate 12s linear infinite',
-				// New enhanced animations
+				// Enhanced animations
 				'fade-in-scroll': 'fadeInScroll 0.6s ease-out forwards',
 				'scale-in-scroll': 'scaleInScroll 0.5s ease-out forwards',
 				'fade-in-blur': 'fadeInBlur 0.7s ease-out forwards',
-				'gradient-shift': 'gradientShift 6s ease infinite'
+				'gradient-shift': 'gradientShift 6s ease infinite',
+				// New advanced animations
+				'float': 'floatAnimation 4s ease-in-out infinite',
+				'morph': 'morphing 8s ease-in-out infinite',
+				'shimmer': 'shimmer 3s linear infinite',
+				'text-glow': 'textGlow 2s ease-in-out infinite',
+				'blob-morph': 'blobMorph 10s linear infinite',
+				'reveal-right': 'revealRight 1s ease-out forwards',
+				'bounce-soft': 'bounce 2s infinite',
 			}
 		}
 	},

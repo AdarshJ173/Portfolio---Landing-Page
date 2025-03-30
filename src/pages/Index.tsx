@@ -1,4 +1,7 @@
 
+import { useEffect, useRef, useState } from "react";
+
+// Components
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -7,13 +10,34 @@ import Experience from "@/components/Experience";
 import Content from "@/components/Content";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import { useEffect, useRef } from "react";
 
 const Index = () => {
   // Create refs for all sections to animate them
   const sectionsRef = useRef<HTMLElement[]>([]);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [isPointerDown, setIsPointerDown] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showScrollProgress, setShowScrollProgress] = useState(false);
 
   useEffect(() => {
+    // Handle cursor position
+    const handleMouseMove = (e: MouseEvent) => {
+      setCursorPosition({ x: e.clientX, y: e.clientY });
+    };
+
+    const handlePointerDown = () => setIsPointerDown(true);
+    const handlePointerUp = () => setIsPointerDown(false);
+
+    // Handle scroll progress
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const currentScroll = window.scrollY;
+      const progress = (currentScroll / totalScroll) * 100;
+      setScrollProgress(progress);
+      
+      setShowScrollProgress(currentScroll > 100);
+    };
+
     // Animation observer for fade-in animations on scroll
     const observer = new IntersectionObserver(
       (entries) => {
@@ -113,6 +137,11 @@ const Index = () => {
       sectionObserver.observe(sectionEl);
     });
 
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('pointerdown', handlePointerDown);
+    window.addEventListener('pointerup', handlePointerUp);
+    window.addEventListener('scroll', handleScroll);
+
     return () => {
       observer.disconnect();
       revealObserver.disconnect();
@@ -121,6 +150,10 @@ const Index = () => {
       scaleObserver.disconnect();
       blurObserver.disconnect();
       sectionObserver.disconnect();
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -128,10 +161,40 @@ const Index = () => {
     <div className="min-h-screen bg-background text-foreground antialiased">
       {/* Background blobs with enhanced colors */}
       <div className="fixed inset-0 z-[-1] overflow-hidden">
-        <div className="blob blob-purple w-[40vw] h-[40vw] top-[-10%] right-[-10%] animate-slow-rotate"></div>
-        <div className="blob blob-pink w-[35vw] h-[35vw] top-[40%] left-[-15%] animate-slow-rotate"></div>
-        <div className="blob blob-indigo w-[30vw] h-[30vw] bottom-[-10%] right-[20%] animate-slow-rotate"></div>
+        <div className="blob blob-purple w-[40vw] h-[40vw] top-[-10%] right-[-10%] animate-blob-morph"></div>
+        <div className="blob blob-pink w-[35vw] h-[35vw] top-[40%] left-[-15%] animate-blob-morph" style={{ animationDelay: '2s' }}></div>
+        <div className="blob blob-indigo w-[30vw] h-[30vw] bottom-[-10%] right-[20%] animate-blob-morph" style={{ animationDelay: '4s' }}></div>
       </div>
+      
+      {/* Custom cursor effect - only visible on desktop */}
+      <div 
+        className="fixed w-6 h-6 rounded-full border-2 border-vibrant-purple pointer-events-none z-[100] mix-blend-difference hidden md:block"
+        style={{ 
+          transform: `translate(${cursorPosition.x - 12}px, ${cursorPosition.y - 12}px)`,
+          transition: 'transform 0.1s ease-out',
+          opacity: 0.7
+        }}
+      ></div>
+      
+      {/* Cursor dot */}
+      <div 
+        className="fixed w-2 h-2 bg-vibrant-purple rounded-full pointer-events-none z-[100] hidden md:block"
+        style={{ 
+          transform: `translate(${cursorPosition.x - 1}px, ${cursorPosition.y - 1}px)`,
+          transition: 'transform 0.05s linear',
+          scale: isPointerDown ? '2' : '1'
+        }}
+      ></div>
+      
+      {/* Scroll progress indicator */}
+      {showScrollProgress && (
+        <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-[60]">
+          <div 
+            className="h-full bg-gradient-to-r from-vibrant-purple to-vibrant-pink"
+            style={{ width: `${scrollProgress}%` }}
+          ></div>
+        </div>
+      )}
       
       <Navbar />
       <Hero />
@@ -141,6 +204,19 @@ const Index = () => {
       <Content />
       <Contact />
       <Footer />
+      
+      {/* Back to top button */}
+      <button 
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className={`fixed bottom-6 right-6 p-3 bg-white rounded-full shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 z-50 ${
+          showScrollProgress ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+        aria-label="Back to top"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-vibrant-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+      </button>
     </div>
   );
 };
