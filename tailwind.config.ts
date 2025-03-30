@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ["Inter", "sans-serif"],
+				playfair: ["Playfair Display", "serif"],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -52,16 +57,30 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				}
+				navy: {
+					50: "#e7eaef",
+					100: "#b3bcd0",
+					200: "#8e9ab5",
+					300: "#5f6e95",
+					400: "#415182",
+					500: "#14264b",
+					600: "#122244",
+					700: "#0e1a35",
+					800: "#0b1428",
+					900: "#080f1e",
+				},
+				teal: {
+					50: "#e6f7f6",
+					100: "#b1e8e5",
+					200: "#8cdcd7",
+					300: "#5ccdc6",
+					400: "#40c3ba",
+					500: "#0d9488",
+					600: "#0c877c",
+					700: "#09695f",
+					800: "#075147",
+					900: "#053d36",
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +103,26 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				fadeIn: {
+					from: { opacity: '0', transform: 'translateY(20px)' },
+					to: { opacity: '1', transform: 'translateY(0)' }
+				},
+				fadeInLeft: {
+					from: { opacity: '0', transform: 'translateX(-20px)' },
+					to: { opacity: '1', transform: 'translateX(0)' }
+				},
+				fadeInRight: {
+					from: { opacity: '0', transform: 'translateX(20px)' },
+					to: { opacity: '1', transform: 'translateX(0)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fadeIn 0.7s ease-out forwards',
+				'fade-in-left': 'fadeInLeft 0.7s ease-out forwards',
+				'fade-in-right': 'fadeInRight 0.7s ease-out forwards'
 			}
 		}
 	},
