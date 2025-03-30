@@ -189,7 +189,7 @@
   
   /* Custom button styles */
   .btn-primary {
-    @apply px-6 py-3 bg-vibrant-purple text-white font-medium rounded-md hover:bg-vibrant-purple/90 transition-all shadow-md hover:shadow-lg hover:shadow-vibrant-purple/20 relative overflow-hidden group;
+    @apply px-6 py-3 bg-vibrant-purple text-white font-medium rounded-md hover:bg-vibrant-purple/90 transition-all shadow-md hover:shadow-lg hover:shadow-vibrant-purple/20 relative overflow-hidden;
   }
   
   .btn-primary::after {
