@@ -19,4 +19,29 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      external: [],
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          emailjs: ['@emailjs/browser']
+        }
+      }
+    },
+    commonjsOptions: {
+      include: [/node_modules/],
+    },
+    sourcemap: false,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    }
+  },
+  optimizeDeps: {
+    include: ['@emailjs/browser']
+  }
 }));

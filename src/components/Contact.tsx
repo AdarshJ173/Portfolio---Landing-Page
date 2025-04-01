@@ -1,27 +1,29 @@
 import { Mail, MapPin, ExternalLink, Instagram, Github, Twitter, Linkedin } from 'lucide-react';
-import { useState, FormEvent } from 'react';
-import emailjs from '@emailjs/browser';
+import { useState, FormEvent, useRef } from 'react';
+// Import emailjs dynamically to avoid build issues
+import * as emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [formStatus, setFormStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setFormStatus('idle');
 
-    const form = e.currentTarget;
-    
     try {
-      await emailjs.sendForm(
-        'service_dfiwqs8', // EmailJS service ID
-        'template_jgbfyco', // EmailJS template ID
-        form,
-        'Ako-iZ2P2z7TSMAsj' // EmailJS public key
-      );
-      setFormStatus('success');
-      form.reset();
+      if (formRef.current) {
+        await emailjs.sendForm(
+          'service_dfiwqs8', // EmailJS service ID
+          'template_jgbfyco', // EmailJS template ID
+          formRef.current,
+          'Ako-iZ2P2z7TSMAsj' // EmailJS public key
+        );
+        setFormStatus('success');
+        formRef.current.reset();
+      }
     } catch (error) {
       console.error('Error sending email:', error);
       setFormStatus('error');
@@ -42,7 +44,7 @@ const Contact = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           <div>
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6" ref={formRef}>
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-navy-700 mb-1">
                   Name
