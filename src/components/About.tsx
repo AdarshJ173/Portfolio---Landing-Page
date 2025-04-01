@@ -97,10 +97,31 @@ const About = () => {
             {/* Animated stats cards */}
             <div className={`mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 ${isVisible ? 'animate-fade-in-scroll delay-200' : 'opacity-0'}`}>
               {[
-                { label: 'Projects', value: loading ? '...' : `${stats.projects}+` },
-                { label: 'Contributions', value: loading ? '...' : `${stats.contributions}+` },
-                { label: 'Competitions', value: loading ? '...' : `${stats.competitions}` },
-                { label: 'Coffee/day', value: '3', icon: <Coffee size={14} className="ml-1"/> }
+                { 
+                  label: 'Projects', 
+                  value: stats.projects,
+                  suffix: '+',
+                  color: 'text-vibrant-purple'
+                },
+                { 
+                  label: 'Contributions', 
+                  value: stats.contributions,
+                  suffix: '+',
+                  color: 'text-vibrant-pink'
+                },
+                { 
+                  label: 'Competitions', 
+                  value: stats.competitions,
+                  suffix: '',
+                  color: 'text-vibrant-teal'
+                },
+                { 
+                  label: 'Coffee/day', 
+                  value: '3',
+                  suffix: '',
+                  icon: <Coffee size={14} className="ml-1"/>,
+                  color: 'text-vibrant-purple'
+                }
               ].map((stat, index) => (
                 <div 
                   key={index} 
@@ -108,9 +129,16 @@ const About = () => {
                   style={{ animationDelay: `${index * 100 + 300}ms` }}
                 >
                   <div className="text-center">
-                    <div className="flex items-center justify-center text-xl font-bold text-vibrant-purple">
-                      {stat.value}
-                      {stat.icon}
+                    <div className={`flex items-center justify-center text-xl font-bold ${stat.color}`}>
+                      {loading && !stat.icon ? (
+                        <div className="w-6 h-6 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        <>
+                          {stat.value}
+                          {stat.suffix}
+                          {stat.icon}
+                        </>
+                      )}
                     </div>
                     <p className="mt-1 text-sm text-foreground/70">{stat.label}</p>
                   </div>

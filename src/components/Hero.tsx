@@ -72,7 +72,7 @@ const Hero = () => {
           {/* Animated card highlight - more compact on mobile */}
           <div className={`mt-10 sm:mt-16 bg-gradient-to-r from-white/5 to-white/10 p-4 sm:p-5 rounded-lg border border-white/10 backdrop-blur-sm shadow-xl animate-float max-w-[90%] sm:max-w-md ${hasLoaded ? 'animate-fade-in delay-500' : 'opacity-0'}`}>
             <p className="text-xs sm:text-sm text-foreground/60 font-medium">CURRENTLY WORKING ON</p>
-            <h3 className="text-base sm:text-lg font-medium mt-1 text-foreground/90">Personal Finance Dashboard</h3>
+            <h3 className="text-base sm:text-lg font-medium mt-1 text-foreground/90">ZenFlow - The Ultimate AI-Powered Workflow</h3>
             <div className="flex flex-wrap gap-1 sm:gap-2 mt-2">
               <span className="px-2 py-0.5 bg-vibrant-purple/10 text-vibrant-purple text-xs rounded-full">React</span>
               <span className="px-2 py-0.5 bg-vibrant-blue/10 text-vibrant-blue text-xs rounded-full">Chart.js</span>
