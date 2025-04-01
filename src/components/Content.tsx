@@ -2,6 +2,243 @@ import { Youtube, Twitch, Twitter } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
+interface YouTubeVideo {
+  id: {
+    videoId: string;
+  };
+  snippet: {
+    title: string;
+    description: string;
+    thumbnails: {
+      medium: {
+        url: string;
+      };
+    };
+    publishedAt: string;
+  };
+}
+
+const YOUTUBE_API_KEY = 'AIzaSyCbFxxpEizPEa4L6Tgzku7iIoThtbXhGAU';
+const CHANNEL_ID = 'UCKyO9n_tcvvbfOyosrSwVtw';
+
+const useYouTubeVideos = (maxResults: number = 12) => {
+  const [videos, setVideos] = useState<YouTubeVideo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // First get the channel's uploads playlist ID
+        const channelResponse = await axios.get(
+          `https://youtube.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CHANNEL_ID}&key=${YOUTUBE_API_KEY}`
+        );
+
+        if (channelResponse.data.items && channelResponse.data.items.length > 0) {
+          const uploadsPlaylistId = channelResponse.data.items[0].contentDetails.relatedPlaylists.uploads;
+
+          // Then get the videos from that playlist
+          const videosResponse = await axios.get(
+            `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=${maxResults}&playlistId=${uploadsPlaylistId}&key=${YOUTUBE_API_KEY}`
+          );
+
+          if (videosResponse.data.items) {
+            const formattedVideos = videosResponse.data.items.map((item: any) => ({
+              id: { videoId: item.snippet.resourceId.videoId },
+              snippet: {
+                title: item.snippet.title,
+                description: item.snippet.description,
+                thumbnails: item.snippet.thumbnails,
+                publishedAt: item.snippet.publishedAt
+              }
+            }));
+            setVideos(formattedVideos);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching videos:', error);
+        setError('Failed to load videos');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVideos();
+  }, [maxResults]);
+
+  return { videos, loading, error };
+};
+
+const VideoCard = ({ video }: { video: YouTubeVideo }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  return (
+    <div
+      className="flex-none w-[360px]"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <a
+        href={`https://www.youtube.com/watch?v=${video.id.videoId}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block group"
+      >
+        <div className="relative aspect-video overflow-hidden rounded-xl bg-navy-50">
+          <img
+            src={video.snippet.thumbnails.medium.url}
+            alt={video.snippet.title}
+            className={`w-full h-full object-cover transition-transform duration-700 ${
+              isHovered ? 'scale-105' : 'scale-100'
+            } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+            onLoad={() => setImageLoaded(true)}
+          />
+          {!imageLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-10 h-10 border-4 border-gray-300 border-t-teal-500 rounded-full animate-spin"></div>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+        <div className="mt-4 px-1">
+          <p className="text-sm font-medium text-navy-700 line-clamp-2 mb-1.5 group-hover:text-teal-600 transition-colors">
+            {video.snippet.title}
+          </p>
+          <div className="flex items-center gap-2">
+            <time className="text-xs text-navy-400 font-mono">
+              {new Date(video.snippet.publishedAt).toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+              })}
+            </time>
+          </div>
+        </div>
+      </a>
+    </div>
+  );
+};
+
+const VideoSkeleton = () => (
+  <div className="flex-none w-[360px] animate-pulse">
+    <div className="aspect-video rounded-xl bg-navy-100/50" />
+    <div className="mt-4 px-1">
+      <div className="h-4 bg-navy-100/50 rounded w-4/5 mb-1.5" />
+      <div className="h-3 bg-navy-100/50 rounded w-1/3" />
+    </div>
+  </div>
+);
+
+const YouTubeVideoList = () => {
+  const { videos, loading, error } = useYouTubeVideos(12);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  if (error) {
+    return (
+      <div className="mt-8 p-6 rounded-xl bg-red-50/50 text-red-600 text-sm">
+        {error}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-12">
+      <h3 className="text-lg font-medium text-navy-800 mb-6">Latest Videos</h3>
+      <div
+        ref={scrollContainerRef}
+        className="flex gap-6 overflow-x-auto pb-6 scroll-smooth hide-scrollbar -mx-6 px-6"
+        style={{
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+        }}
+      >
+        {loading
+          ? Array.from({ length: 4 }).map((_, index) => (
+              <VideoSkeleton key={index} />
+            ))
+          : videos.map((video) => (
+              <VideoCard key={video.id.videoId} video={video} />
+            ))}
+      </div>
+    </div>
+  );
+};
+
+const FeaturedContent = () => {
+  const { videos, loading, error } = useYouTubeVideos(2);
+  const [videoStates, setVideoStates] = useState<{[key: string]: boolean}>({});
+
+  const handleIframeLoad = (videoId: string) => {
+    setVideoStates(prev => ({
+      ...prev,
+      [videoId]: true
+    }));
+  };
+
+  if (error) {
+    return (
+      <div className="p-6 rounded-xl bg-red-50/50 text-red-600 text-sm">
+        {error}
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {[1, 2].map((i) => (
+          <div key={i} className="aspect-[16/10] rounded-xl bg-navy-100/50 animate-pulse" />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {videos.map((video) => (
+        <div key={video.id.videoId} className="group">
+          <div className="aspect-[16/10] relative rounded-xl overflow-hidden bg-navy-50">
+            {!videoStates[video.id.videoId] && (
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <div className="w-12 h-12 border-4 border-gray-300 border-t-teal-500 rounded-full animate-spin"></div>
+              </div>
+            )}
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src={`https://www.youtube.com/embed/${video.id.videoId}?rel=0`}
+              title={video.snippet.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              loading="lazy"
+              onLoad={() => handleIframeLoad(video.id.videoId)}
+              style={{ opacity: videoStates[video.id.videoId] ? 1 : 0 }}
+            />
+          </div>
+          <div className="mt-4">
+            <h4 className="text-base font-medium text-navy-700 group-hover:text-teal-600 transition-colors line-clamp-2 mb-1.5">
+              {video.snippet.title}
+            </h4>
+            <time className="text-xs text-navy-400 font-mono block mb-2">
+              {new Date(video.snippet.publishedAt).toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+              })}
+            </time>
+            <p className="text-sm text-navy-600 line-clamp-2">
+              {video.snippet.description}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const contentItems = [
   {
     title: 'Coding Journey Series',
@@ -77,214 +314,6 @@ const ContentCard = ({
     </div>
   </div>
 );
-
-interface YouTubeVideo {
-  id: {
-    videoId: string;
-  };
-  snippet: {
-    title: string;
-    thumbnails: {
-      medium: {
-        url: string;
-      };
-    };
-    publishedAt: string;
-    description: string;
-  };
-}
-
-const YOUTUBE_API_KEY = 'AIzaSyDoTevzElKvvHTymI92-y5rhkFXY3LST8s';
-const CHANNEL_ID = 'UCKyO9n_tcvvbfOyosrSwVtw';
-
-const useYouTubeVideos = (maxResults: number = 12) => {
-  const [videos, setVideos] = useState<YouTubeVideo[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        // First, let's verify we can get channel info
-        const channelResponse = await axios.get(
-          `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CHANNEL_ID}&key=${YOUTUBE_API_KEY}`
-        );
-        
-        console.log('Channel response:', channelResponse.data);
-        
-        // Then get the videos
-        const videosResponse = await axios.get(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=${maxResults}&order=date&type=video&key=${YOUTUBE_API_KEY}`
-        );
-        
-        console.log('Videos response:', videosResponse.data);
-        
-        if (videosResponse.data.items) {
-          setVideos(videosResponse.data.items);
-        } else {
-          setError('No videos found');
-        }
-      } catch (error) {
-        console.error('Error fetching videos:', error);
-        setError(error instanceof Error ? error.message : 'Failed to fetch videos');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchVideos();
-  }, [maxResults]);
-
-  return { videos, loading, error };
-};
-
-const VideoCard = ({ video }: { video: YouTubeVideo }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <div
-      className="flex-none w-[360px]"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <a
-        href={`https://www.youtube.com/watch?v=${video.id.videoId}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block group"
-      >
-        <div className="relative aspect-video overflow-hidden rounded-xl bg-navy-50">
-          <img
-            src={video.snippet.thumbnails.medium.url}
-            alt={video.snippet.title}
-            className={`w-full h-full object-cover transition-transform duration-700 ${
-              isHovered ? 'scale-105' : 'scale-100'
-            }`}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        </div>
-        <div className="mt-4 px-1">
-          <p className="text-sm font-medium text-navy-700 line-clamp-2 mb-1.5 group-hover:text-teal-600 transition-colors">
-            {video.snippet.title}
-          </p>
-          <div className="flex items-center gap-2">
-            <time className="text-xs text-navy-400 font-mono">
-              {new Date(video.snippet.publishedAt).toLocaleDateString('en-US', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-              })}
-            </time>
-          </div>
-        </div>
-      </a>
-    </div>
-  );
-};
-
-const VideoSkeleton = () => (
-  <div className="flex-none w-[360px] animate-pulse">
-    <div className="aspect-video rounded-xl bg-navy-100/50" />
-    <div className="mt-4 px-1">
-      <div className="h-4 bg-navy-100/50 rounded w-4/5 mb-1.5" />
-      <div className="h-3 bg-navy-100/50 rounded w-1/3" />
-    </div>
-  </div>
-);
-
-const YouTubeVideoList = () => {
-  const { videos, loading, error } = useYouTubeVideos(12);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  if (error) {
-    return (
-      <div className="mt-8 p-6 rounded-xl bg-red-50/50 text-red-600 text-sm">
-        Error loading videos: {error}
-      </div>
-    );
-  }
-
-  return (
-    <div className="mt-12">
-      <h3 className="text-lg font-medium text-navy-800 mb-6">My Youtube Videos</h3>
-      <div
-        ref={scrollContainerRef}
-        className="flex gap-6 overflow-x-auto pb-6 scroll-smooth hide-scrollbar -mx-6 px-6"
-        style={{
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-        }}
-      >
-        {loading
-          ? Array.from({ length: 4 }).map((_, index) => (
-              <VideoSkeleton key={index} />
-            ))
-          : videos.map((video) => (
-              <VideoCard key={video.id.videoId} video={video} />
-            ))}
-      </div>
-    </div>
-  );
-};
-
-const FeaturedContent = () => {
-  const { videos, loading, error } = useYouTubeVideos(2);
-
-  if (error) {
-    return (
-      <div className="p-6 rounded-xl bg-red-50/50 text-red-600 text-sm">
-        Error loading featured videos: {error}
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {[1, 2].map((i) => (
-          <div key={i} className="aspect-[16/10] rounded-xl bg-navy-100/50 animate-pulse" />
-        ))}
-      </div>
-    );
-  }
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {videos.map((video) => (
-        <div key={video.id.videoId} className="group">
-          <div className="aspect-[16/10] relative rounded-xl overflow-hidden bg-navy-50">
-            <iframe
-              className="absolute inset-0 w-full h-full"
-              src={`https://www.youtube.com/embed/${video.id.videoId}`}
-              title={video.snippet.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              loading="lazy"
-            />
-          </div>
-          <div className="mt-4">
-            <h4 className="text-base font-medium text-navy-700 group-hover:text-teal-600 transition-colors line-clamp-2 mb-1.5">
-              {video.snippet.title}
-            </h4>
-            <time className="text-xs text-navy-400 font-mono block mb-2">
-              {new Date(video.snippet.publishedAt).toLocaleDateString('en-US', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-              })}
-            </time>
-            <p className="text-sm text-navy-600 line-clamp-2">
-              {video.snippet.description}
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
 
 const Content = () => {
   return (

@@ -14,8 +14,7 @@ const Index = () => {
   // Create refs for all sections to animate them
   const sectionsRef = useRef<HTMLElement[]>([]);
   const cursorRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const cursorDotRef = useRef<HTMLDivElement>(null);
-  const cursorRingRef = useRef<HTMLDivElement>(null);
+  const cursorGlowRef = useRef<HTMLDivElement>(null);
   const [isPointerDown, setIsPointerDown] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollProgress, setShowScrollProgress] = useState(false);
@@ -32,9 +31,8 @@ const Index = () => {
 
     // Optimized cursor movement with requestAnimationFrame
     const updateCursorPosition = () => {
-      if (cursorDotRef.current && cursorRingRef.current) {
-        cursorDotRef.current.style.transform = `translate3d(${cursorRef.current.x - 1}px, ${cursorRef.current.y - 1}px, 0)`;
-        cursorRingRef.current.style.transform = `translate3d(${cursorRef.current.x - 12}px, ${cursorRef.current.y - 12}px, 0)`;
+      if (cursorGlowRef.current) {
+        cursorGlowRef.current.style.transform = `translate3d(${cursorRef.current.x - 16}px, ${cursorRef.current.y - 16}px, 0) scale(${isPointerDown ? 1.5 : 1})`;
       }
       rafRef.current = requestAnimationFrame(updateCursorPosition);
     };
@@ -207,26 +205,16 @@ const Index = () => {
       
       {/* Custom cursor effect - only visible on desktop */}
       {!isMobile && (
-        <>
-          <div 
-            ref={cursorRingRef}
-            className="fixed w-6 h-6 rounded-full border-2 border-vibrant-purple pointer-events-none z-[100] mix-blend-difference hidden md:block will-change-transform"
-            style={{ 
-              opacity: 0.7,
-              backfaceVisibility: 'hidden'
-            }}
-          ></div>
-          
-          {/* Cursor dot */}
-          <div 
-            ref={cursorDotRef}
-            className="fixed w-2 h-2 bg-vibrant-purple rounded-full pointer-events-none z-[100] hidden md:block will-change-transform"
-            style={{ 
-              scale: isPointerDown ? '2' : '1',
-              backfaceVisibility: 'hidden'
-            }}
-          ></div>
-        </>
+        <div 
+          ref={cursorGlowRef}
+          className="fixed w-8 h-8 pointer-events-none z-[100] hidden md:block will-change-transform"
+          style={{ 
+            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0) 70%)',
+            transform: `scale(${isPointerDown ? 1.5 : 1})`,
+            transition: 'transform 0.2s ease-out',
+            backfaceVisibility: 'hidden'
+          }}
+        ></div>
       )}
       
       {/* Scroll progress indicator */}

@@ -1,69 +1,44 @@
-# Welcome to your Lovable project
+# Welcome to my Portfolio Project
 
-## Project info
+This is my personal portfolio project showcasing my work and skills.
 
-**URL**: https://lovable.dev/projects/9ecbba3c-8e8d-441f-b3db-c802c53482c0
+## Development
 
-## How can I edit this code?
+### Local Development
 
-There are several ways of editing your application.
+To work on this project locally:
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/9ecbba3c-8e8d-441f-b3db-c802c53482c0) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+1. Clone this repository
+2. Install dependencies:
+```bash
+npm install
+```
+3. Start the development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Building
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+To build the project:
 
-**Use GitHub Codespaces**
+```bash
+npm run build
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Deployment
 
-## What technologies are used for this project?
+The project can be deployed to any static hosting platform of your choice (Vercel, Netlify, etc.).
 
-This project is built with .
+To deploy:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Build the project using `npm run build`
+2. Deploy the `dist` folder to your hosting platform
 
-## How can I deploy this project?
+## Custom Domain
 
-Simply open [Lovable](https://lovable.dev/projects/9ecbba3c-8e8d-441f-b3db-c802c53482c0) and click on Share -> Publish.
+You can set up a custom domain by following your hosting provider's documentation for custom domain configuration.
 
-## I want to use a custom domain - is that possible?
+## License
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+This project is licensed under the MIT License.
