@@ -1,6 +1,6 @@
-
 import { useState } from 'react';
 import { ExternalLink, Github, ArrowRight } from 'lucide-react';
+import { useGithubPinnedRepos } from '../hooks/useGithubPinnedRepos';
 
 interface Project {
   title: string;
@@ -9,69 +9,63 @@ interface Project {
   tags: string[];
   demoUrl?: string;
   repoUrl?: string;
-  featured: boolean;
 }
 
 const Projects = () => {
-  const [filter, setFilter] = useState<'all' | 'featured'>('all');
+  const [filter, setFilter] = useState<'all' | 'pinned'>('all');
+  const { pinnedRepos } = useGithubPinnedRepos('AdarshJ173');
   
   const projects: Project[] = [
     {
-      title: "Personal Finance Dashboard",
-      description: "A comprehensive dashboard for tracking personal finances, expenses, and investments with data visualization.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format",
-      tags: ["React", "Chart.js", "Node.js", "MongoDB"],
-      demoUrl: "#",
-      repoUrl: "#",
-      featured: true,
+      title: "Vocabify",
+      description: "A dynamic app designed to enhance vocabulary through idioms, phrasal verbs, synonyms, and antonyms. Uses spaced repetition with engaging flashcards and quizzes for effective learning.",
+      image: "https://images.unsplash.com/photo-1546521343-4eb2c01aa44b?q=80&w=2075&auto=format",
+      tags: ["Dart", "Flutter", "Firebase", "Material Design"],
+      repoUrl: "https://github.com/AdarshJ173/Vocabify"
     },
     {
-      title: "Social Media API",
-      description: "RESTful API designed for a social media platform with authentication, posts, comments, and likes functionality.",
-      image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1974&auto=format",
-      tags: ["Express.js", "MongoDB", "JWT", "REST API"],
-      repoUrl: "#",
-      featured: true,
+      title: "zephyr",
+      description: "A C++ project showcasing various algorithms and data structures implementations.",
+      image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=2070&auto=format",
+      tags: ["C++", "Data Structures", "Algorithms"],
+      repoUrl: "https://github.com/AdarshJ173/zephyr"
     },
     {
-      title: "E-commerce Storefront",
-      description: "A modern e-commerce storefront with product listings, cart functionality, and checkout process.",
-      image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format",
-      tags: ["Next.js", "Tailwind CSS", "Stripe", "Prisma"],
-      demoUrl: "#",
-      repoUrl: "#",
-      featured: false,
+      title: "Portfolio---Landing-Page",
+      description: "A modern, responsive portfolio website built with Next.js and TypeScript, featuring dynamic GitHub statistics, project showcase, and contact information.",
+      image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=2055&auto=format",
+      tags: ["TypeScript", "Next.js", "Tailwind CSS", "React"],
+      repoUrl: "https://github.com/AdarshJ173/Portfolio---Landing-Page"
     },
     {
-      title: "Weather Forecast App",
-      description: "App that provides real-time weather forecasts based on user location or search.",
-      image: "https://images.unsplash.com/photo-1601134467661-3d775b999c8b?q=80&w=2075&auto=format",
-      tags: ["React", "OpenWeather API", "Geolocation"],
-      demoUrl: "#",
-      featured: false,
+      title: "NutriTech",
+      description: "AI-Powered Nutritional App that transforms lives! Enjoy personalized, budget-friendly meals crafted by AI. Connect with vital government schemes effortlessly. Share and discover local recipes.",
+      image: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=2070&auto=format",
+      tags: ["TypeScript", "Next.js", "AI", "Nutrition", "Government Schemes"],
+      repoUrl: "https://github.com/AdarshJ173/NutriTech"
     },
     {
-      title: "Markdown Note Editor",
-      description: "A simple yet powerful markdown editor with preview functionality and local storage.",
-      image: "https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?q=80&w=2070&auto=format",
-      tags: ["React", "Marked.js", "LocalStorage"],
-      demoUrl: "#",
-      repoUrl: "#",
-      featured: true,
+      title: "ToDo-IT",
+      description: "A clean and intuitive todo list application with task management features, built with modern web technologies.",
+      image: "https://images.unsplash.com/photo-1540350394557-8d14678e7f91?q=80&w=2032&auto=format",
+      tags: ["HTML", "CSS", "JavaScript", "Local Storage"],
+      demoUrl: "https://adarshj173.github.io/ToDo-IT/",
+      repoUrl: "https://github.com/AdarshJ173/ToDo-IT"
     },
     {
-      title: "Task Management System",
-      description: "A collaborative task management system with real-time updates and team functionality.",
-      image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=2072&auto=format",
-      tags: ["Vue.js", "Firebase", "Vuetify"],
-      demoUrl: "#",
-      featured: false,
+      title: "CAL-C",
+      description: "A user-friendly calculator website that performs basic arithmetic operations with a clean interface and responsive design.",
+      image: "https://images.unsplash.com/photo-1587145820266-a5951ee6f620?q=80&w=1980&auto=format",
+      tags: ["HTML", "CSS", "JavaScript"],
+      demoUrl: "https://adarshj173.github.io/CAL-C/",
+      repoUrl: "https://github.com/AdarshJ173/CAL-C"
     }
   ];
 
+  // Filter projects based on selected tab
   const filteredProjects = filter === 'all' 
     ? projects 
-    : projects.filter(project => project.featured);
+    : projects.filter(project => pinnedRepos.includes(project.title));
 
   return (
     <section id="projects" className="section bg-navy-50">
@@ -91,10 +85,10 @@ const Projects = () => {
             All Projects
           </button>
           <button 
-            onClick={() => setFilter('featured')}
-            className={`mr-4 pb-2 whitespace-nowrap ${filter === 'featured' ? 'border-b-2 border-teal-500 text-navy-700 font-medium' : 'text-navy-500'}`}
+            onClick={() => setFilter('pinned')}
+            className={`mr-4 pb-2 whitespace-nowrap ${filter === 'pinned' ? 'border-b-2 border-teal-500 text-navy-700 font-medium' : 'text-navy-500'}`}
           >
-            Featured
+            Pinned
           </button>
         </div>
 
@@ -150,9 +144,11 @@ const Projects = () => {
                     )}
                   </div>
                   
-                  <span className="text-navy-400 text-xs sm:text-sm font-medium">
-                    {project.featured && "Featured"}
-                  </span>
+                  {pinnedRepos.includes(project.title) && (
+                    <span className="text-teal-500 text-xs sm:text-sm font-medium">
+                      Pinned
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -161,7 +157,7 @@ const Projects = () => {
         
         <div className="mt-10 text-center">
           <a 
-            href="https://github.com" 
+            href="https://github.com/AdarshJ173" 
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center font-medium text-teal-500 hover:text-teal-700 tap-target"

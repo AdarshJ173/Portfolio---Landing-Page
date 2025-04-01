@@ -1,4 +1,3 @@
-
 import { Github, Twitter, Linkedin, Youtube } from 'lucide-react';
 
 const Footer = () => {
@@ -11,7 +10,7 @@ const Footer = () => {
           <div className="mb-6 md:mb-0">
             <a href="#" className="text-xl font-bold font-playfair">
               <span className="text-teal-400">{'<'}</span>
-              Stefan
+              Adarsh
               <span className="text-teal-400">{'/>'}</span>
             </a>
             <p className="mt-2 text-navy-200 max-w-xs">
@@ -21,21 +20,18 @@ const Footer = () => {
 
           <div className="flex flex-col items-center md:items-end">
             <div className="flex space-x-4 mb-4">
-              <a href="#" className="text-navy-200 hover:text-white transition-colors" aria-label="Github">
+              <a href="https://github.com/AdarshJ173" className="text-navy-200 hover:text-white transition-colors" aria-label="Github" target="_blank" rel="noopener noreferrer">
                 <Github />
               </a>
-              <a href="#" className="text-navy-200 hover:text-white transition-colors" aria-label="Twitter">
+              <a href="https://twitter.com/codexaaj" className="text-navy-200 hover:text-white transition-colors" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
                 <Twitter />
               </a>
-              <a href="#" className="text-navy-200 hover:text-white transition-colors" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/a-adarsh-jagannath-968147243" className="text-navy-200 hover:text-white transition-colors" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
                 <Linkedin />
-              </a>
-              <a href="#" className="text-navy-200 hover:text-white transition-colors" aria-label="YouTube">
-                <Youtube />
               </a>
             </div>
             <div className="text-navy-300 text-sm">
-              © {currentYear} Stefan. All rights reserved.
+              © {currentYear} A.Adarsh Jagannath. All rights reserved.
             </div>
           </div>
         </div>

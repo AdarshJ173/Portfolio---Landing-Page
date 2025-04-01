@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
@@ -81,7 +80,7 @@ const Navbar = () => {
             className={`text-lg sm:text-xl font-bold font-playfair text-foreground relative overflow-hidden ${hasLoaded ? 'animate-fade-in' : 'opacity-0'}`}
           >
             <span className="text-vibrant-purple">{'<'}</span>
-            Stefan
+            Adarsh
             <span className="text-vibrant-purple">{'/>'}</span>
             
             {/* Animated underscore cursor */}
@@ -117,7 +116,9 @@ const Navbar = () => {
             
             {/* Resume button */}
             <a 
-              href="#" 
+              href="https://drive.google.com/file/d/1Ee-AmHm5BOuiebvzCUeElyGuWs4oOw9J/view?usp=sharing" 
+              target="_blank"
+              rel="noopener noreferrer"
               className={`ml-2 px-3 lg:px-4 py-2 border border-vibrant-purple text-vibrant-purple rounded-md hover:bg-vibrant-purple/5 transition-all ${hasLoaded ? 'animate-fade-in delay-600' : 'opacity-0'}`}
             >
               Resume
@@ -144,7 +145,7 @@ const Navbar = () => {
               className="text-lg font-bold font-playfair text-foreground"
             >
               <span className="text-vibrant-purple">{'<'}</span>
-              Stefan
+              Adarsh
               <span className="text-vibrant-purple">{'/>'}</span>
             </a>
             <button 
@@ -186,7 +187,9 @@ const Navbar = () => {
           </div>
           <div className="container-custom py-6 border-t border-gray-100">
             <a 
-              href="#" 
+              href="https://drive.google.com/file/d/1Ee-AmHm5BOuiebvzCUeElyGuWs4oOw9J/view?usp=sharing" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="block py-3 px-4 text-center border border-vibrant-purple text-vibrant-purple rounded-md animate-fade-in w-full sm:w-auto"
               style={{ animationDelay: '250ms' }}
               onClick={() => setIsOpen(false)}

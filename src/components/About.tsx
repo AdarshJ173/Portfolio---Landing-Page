@@ -1,11 +1,14 @@
-
 import { Code, Presentation, Brain, Award, Coffee } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useGithubStats } from '../hooks/useGithubStats';
 
 const About = () => {
   const [activeTab, setActiveTab] = useState('skills');
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  
+  // Using your actual GitHub username
+  const { stats, loading, error } = useGithubStats('AdarshJ173');
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -38,16 +41,18 @@ const About = () => {
 
   const education = [
     { 
-      degree: 'Bachelor of Computer Science',
-      institution: 'University Name',
-      period: '2023 - Present',
-      description: 'Focusing on software development, algorithms, and data structures with a minor in UI/UX Design.'
+      degree: 'B.Tech in Computer Science Engineering',
+      institution: 'Woxsen University, Hyderabad',
+      period: '2024 - 2028',
+      description: 'Pursuing CSE at one of India\'s top-ranked private universities, known for its world-class infrastructure and industry-integrated curriculum. The university\'s School of Technology is recognized for its cutting-edge research facilities, international collaborations, and exceptional placement record. Learning in an environment that emphasizes practical experience, innovation, and entrepreneurial thinking.'
     }
   ];
 
   const interests = [
-    'Open Source Contribution', 'UI/UX Design', 'Machine Learning', 
-    'Mobile App Development', 'Technical Writing', 'Game Development'
+    'App Development', 'Web Development', 'AI & Machine Learning', 
+    'Content Creation', 'Content Writing', 'Video Editing',
+    'Cinematography', 'Photography', 'Open Source Contribution',
+    'UI/UX Design', 'Guitar', 'Piano'
   ];
 
   return (
@@ -92,9 +97,9 @@ const About = () => {
             {/* Animated stats cards */}
             <div className={`mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 ${isVisible ? 'animate-fade-in-scroll delay-200' : 'opacity-0'}`}>
               {[
-                { label: 'Projects', value: '15+' },
-                { label: 'Contributions', value: '50+' },
-                { label: 'Competitions', value: '5' },
+                { label: 'Projects', value: loading ? '...' : `${stats.projects}+` },
+                { label: 'Contributions', value: loading ? '...' : `${stats.contributions}+` },
+                { label: 'Competitions', value: loading ? '...' : `${stats.competitions}` },
                 { label: 'Coffee/day', value: '3', icon: <Coffee size={14} className="ml-1"/> }
               ].map((stat, index) => (
                 <div 
@@ -172,14 +177,14 @@ const About = () => {
 
               {/* Skills Tab */}
               {activeTab === 'skills' && (
-                <div className="bg-gradient-to-br from-white to-pastel-purple/10 p-8 rounded-lg border border-pastel-purple/20 shadow-sm transition-all animate-fade-in-blur">
+                <div className="bg-gradient-to-br from-white to-pastel-purple/10 p-8 rounded-lg border border-pastel-purple/20 shadow-sm transition-all">
                   <h3 className="text-xl font-bold mb-6 text-foreground flex items-center">
                     <Award className="mr-2 text-vibrant-purple" size={20} />
                     My Skills
                   </h3>
                   <div className="space-y-6">
                     {skills.map((skillGroup, index) => (
-                      <div key={index} className="fade-in-element" style={{ animationDelay: `${index * 100 + 500}ms` }}>
+                      <div key={index} className="transition-all duration-300" style={{ animationDelay: `${index * 100 + 500}ms` }}>
                         <h4 className="text-md font-medium text-foreground mb-3 flex items-center">
                           <span className="w-2 h-2 rounded-full bg-vibrant-purple mr-2"></span>
                           {skillGroup.category}
@@ -202,7 +207,7 @@ const About = () => {
 
               {/* Education Tab */}
               {activeTab === 'education' && (
-                <div className="bg-gradient-to-br from-white to-pastel-blue/10 p-8 rounded-lg border border-pastel-blue/20 shadow-sm animate-fade-in-blur">
+                <div className="bg-gradient-to-br from-white to-pastel-blue/10 p-8 rounded-lg border border-pastel-blue/20 shadow-sm transition-all">
                   <h3 className="text-xl font-bold mb-6 text-foreground flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-vibrant-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path d="M12 14l9-5-9-5-9 5 9 5z" />
@@ -230,7 +235,7 @@ const About = () => {
 
               {/* Interests Tab */}
               {activeTab === 'interests' && (
-                <div className="bg-gradient-to-br from-white to-pastel-green/10 p-8 rounded-lg border border-pastel-green/20 shadow-sm animate-fade-in-blur">
+                <div className="bg-gradient-to-br from-white to-pastel-green/10 p-8 rounded-lg border border-pastel-green/20 shadow-sm transition-all">
                   <h3 className="text-xl font-bold mb-6 text-foreground flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-vibrant-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />

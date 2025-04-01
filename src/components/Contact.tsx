@@ -1,7 +1,35 @@
-
-import { Mail, MapPin, ExternalLink } from 'lucide-react';
+import { Mail, MapPin, ExternalLink, Instagram, Github, Twitter, Linkedin } from 'lucide-react';
+import { useState, FormEvent } from 'react';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [formStatus, setFormStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setFormStatus('idle');
+
+    const form = e.currentTarget;
+    
+    try {
+      await emailjs.sendForm(
+        'service_dfiwqs8', // EmailJS service ID
+        'template_jgbfyco', // EmailJS template ID
+        form,
+        'Ako-iZ2P2z7TSMAsj' // EmailJS public key
+      );
+      setFormStatus('success');
+      form.reset();
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setFormStatus('error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <section id="contact" className="section bg-white">
       <div className="container-custom">
@@ -14,7 +42,7 @@ const Contact = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           <div>
-            <form className="space-y-4 sm:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-navy-700 mb-1">
                   Name
@@ -26,6 +54,7 @@ const Contact = () => {
                   className="w-full px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                   placeholder="Your name"
                   required
+                  disabled={isLoading}
                 />
               </div>
               <div>
@@ -39,6 +68,7 @@ const Contact = () => {
                   className="w-full px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                   placeholder="your.email@example.com"
                   required
+                  disabled={isLoading}
                 />
               </div>
               <div>
@@ -52,14 +82,24 @@ const Contact = () => {
                   className="w-full px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                   placeholder="How can I help you?"
                   required
+                  disabled={isLoading}
                 ></textarea>
               </div>
-              <button
-                type="submit"
-                className="w-full sm:w-auto px-6 py-3 bg-teal-500 text-white font-medium rounded-md hover:bg-teal-600 transition-colors"
-              >
-                Send Message
-              </button>
+              <div>
+                <button
+                  type="submit"
+                  className="w-full sm:w-auto px-6 py-3 bg-teal-500 text-white font-medium rounded-md hover:bg-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Sending...' : 'Send Message'}
+                </button>
+                {formStatus === 'success' && (
+                  <p className="mt-2 text-green-600 text-sm">Message sent successfully!</p>
+                )}
+                {formStatus === 'error' && (
+                  <p className="mt-2 text-red-600 text-sm">Failed to send message. Please try again.</p>
+                )}
+              </div>
             </form>
           </div>
 
@@ -72,10 +112,10 @@ const Contact = () => {
                   <div>
                     <h4 className="text-navy-700 font-medium">Email</h4>
                     <a 
-                      href="mailto:stefan@example.com" 
+                      href="mailto:adarshjagannath777@gmail.com" 
                       className="text-navy-600 hover:text-teal-500 break-words"
                     >
-                      stefan@example.com
+                      adarshjagannath777@gmail.com
                     </a>
                   </div>
                 </div>
@@ -83,7 +123,48 @@ const Contact = () => {
                   <MapPin className="h-5 w-5 text-teal-500 mt-0.5 mr-3 flex-shrink-0" />
                   <div>
                     <h4 className="text-navy-700 font-medium">Location</h4>
-                    <p className="text-navy-600">City, Country</p>
+                    <p className="text-navy-600">Hyderabad, India</p>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-navy-700 font-medium mb-2">Social Media</h4>
+                  <div className="flex space-x-4">
+                    <a 
+                      href="https://github.com/AdarshJ173"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-navy-600 hover:text-teal-500"
+                      aria-label="GitHub"
+                    >
+                      <Github className="h-5 w-5" />
+                    </a>
+                    <a 
+                      href="https://www.instagram.com/a.adarshjagannath_/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-navy-600 hover:text-teal-500"
+                      aria-label="Instagram"
+                    >
+                      <Instagram className="h-5 w-5" />
+                    </a>
+                    <a 
+                      href="https://twitter.com/codexaaj"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-navy-600 hover:text-teal-500"
+                      aria-label="Twitter"
+                    >
+                      <Twitter className="h-5 w-5" />
+                    </a>
+                    <a 
+                      href="https://www.linkedin.com/in/a-adarsh-jagannath-968147243"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-navy-600 hover:text-teal-500"
+                      aria-label="LinkedIn"
+                    >
+                      <Linkedin className="h-5 w-5" />
+                    </a>
                   </div>
                 </div>
               </div>
@@ -95,8 +176,10 @@ const Contact = () => {
                 I'm currently looking for internships, freelance projects, and collaboration opportunities.
               </p>
               <a 
-                href="#" 
+                href="https://drive.google.com/file/d/1Ee-AmHm5BOuiebvzCUeElyGuWs4oOw9J/view?usp=sharing" 
                 className="inline-flex items-center text-teal-500 hover:text-teal-600 font-medium tap-target"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 View resume <ExternalLink className="ml-1 h-4 w-4" />
               </a>

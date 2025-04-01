@@ -1,4 +1,3 @@
-
 import { ArrowDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -38,13 +37,13 @@ const Hero = () => {
             Hi, my name is
           </p>
           
-          <div className="overflow-hidden mb-4">
+          <div className="overflow-hidden mb-6">
             <h1 
               className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-playfair ${hasLoaded ? 'animate-reveal-right' : 'scale-x-0'}`}
               style={{ transitionDelay: '200ms' }}
             >
-              <span className="block gradient-text animated-text">Stefan.</span>
-              <span className="block text-foreground/80 mt-2 text-outline">I build things for the web.</span>
+              <span className="block gradient-text pb-4">A.Adarsh Jagannath</span>
+              <span className="block text-foreground/90 mt-6 mb-4">I build things for the web.</span>
             </h1>
           </div>
           

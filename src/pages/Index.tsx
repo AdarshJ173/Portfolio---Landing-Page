@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 
 // Components
@@ -14,11 +13,14 @@ import Footer from "@/components/Footer";
 const Index = () => {
   // Create refs for all sections to animate them
   const sectionsRef = useRef<HTMLElement[]>([]);
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const cursorRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const cursorDotRef = useRef<HTMLDivElement>(null);
+  const cursorRingRef = useRef<HTMLDivElement>(null);
   const [isPointerDown, setIsPointerDown] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollProgress, setShowScrollProgress] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const rafRef = useRef<number>();
 
   useEffect(() => {
     // Check if device is mobile
@@ -28,10 +30,19 @@ const Index = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
 
+    // Optimized cursor movement with requestAnimationFrame
+    const updateCursorPosition = () => {
+      if (cursorDotRef.current && cursorRingRef.current) {
+        cursorDotRef.current.style.transform = `translate3d(${cursorRef.current.x - 1}px, ${cursorRef.current.y - 1}px, 0)`;
+        cursorRingRef.current.style.transform = `translate3d(${cursorRef.current.x - 12}px, ${cursorRef.current.y - 12}px, 0)`;
+      }
+      rafRef.current = requestAnimationFrame(updateCursorPosition);
+    };
+
     // Handle cursor position - only on desktop
     const handleMouseMove = (e: MouseEvent) => {
       if (!isMobile) {
-        setCursorPosition({ x: e.clientX, y: e.clientY });
+        cursorRef.current = { x: e.clientX, y: e.clientY };
       }
     };
 
@@ -110,6 +121,9 @@ const Index = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const section = entry.target as HTMLElement;
+            // Skip animation for Experience section
+            if (section.id === 'experience') return;
+            
             const sectionIndex = sectionsRef.current.indexOf(section);
             
             // Apply different animation types based on section index (alternating)
@@ -149,9 +163,10 @@ const Index = () => {
 
     // Only add mouse events on non-mobile devices
     if (!isMobile) {
-      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
       window.addEventListener('pointerdown', handlePointerDown);
       window.addEventListener('pointerup', handlePointerUp);
+      rafRef.current = requestAnimationFrame(updateCursorPosition);
     }
     
     window.addEventListener('scroll', handleScroll);
@@ -170,6 +185,9 @@ const Index = () => {
         window.removeEventListener('mousemove', handleMouseMove);
         window.removeEventListener('pointerdown', handlePointerDown);
         window.removeEventListener('pointerup', handlePointerUp);
+        if (rafRef.current) {
+          cancelAnimationFrame(rafRef.current);
+        }
       }
       
       window.removeEventListener('scroll', handleScroll);
@@ -191,21 +209,21 @@ const Index = () => {
       {!isMobile && (
         <>
           <div 
-            className="fixed w-6 h-6 rounded-full border-2 border-vibrant-purple pointer-events-none z-[100] mix-blend-difference hidden md:block"
+            ref={cursorRingRef}
+            className="fixed w-6 h-6 rounded-full border-2 border-vibrant-purple pointer-events-none z-[100] mix-blend-difference hidden md:block will-change-transform"
             style={{ 
-              transform: `translate(${cursorPosition.x - 12}px, ${cursorPosition.y - 12}px)`,
-              transition: 'transform 0.1s ease-out',
-              opacity: 0.7
+              opacity: 0.7,
+              backfaceVisibility: 'hidden'
             }}
           ></div>
           
           {/* Cursor dot */}
           <div 
-            className="fixed w-2 h-2 bg-vibrant-purple rounded-full pointer-events-none z-[100] hidden md:block"
+            ref={cursorDotRef}
+            className="fixed w-2 h-2 bg-vibrant-purple rounded-full pointer-events-none z-[100] hidden md:block will-change-transform"
             style={{ 
-              transform: `translate(${cursorPosition.x - 1}px, ${cursorPosition.y - 1}px)`,
-              transition: 'transform 0.05s linear',
-              scale: isPointerDown ? '2' : '1'
+              scale: isPointerDown ? '2' : '1',
+              backfaceVisibility: 'hidden'
             }}
           ></div>
         </>
