@@ -1,6 +1,6 @@
 {
   "framework": "vite",
-  "buildCommand": "npm install --no-save @emailjs/browser && npm run build",
+  "buildCommand": "npm install --save terser && NODE_ENV=production npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "rewrites": [
